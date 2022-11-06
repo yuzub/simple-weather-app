@@ -20,7 +20,13 @@ export class CitiesListComponent implements OnInit {
   newCityCtrl: FormControl = new FormControl('');
   formGroup: FormGroup = new FormGroup({
     newCity: this.newCityCtrl
-  });;
+  });
+  curPage: number = 1;
+  pageSize: number = 5;
+
+  get maxPage(): number {
+    return Math.ceil(this.storageCities.length / this.pageSize);
+  }
 
   constructor(
     private _openweatherGeoApi: OpenweatherGeoApiService,
@@ -33,6 +39,7 @@ export class CitiesListComponent implements OnInit {
     this.storageCities = storageCities ? JSON.parse(storageCities) : [];
 
     this._getGeolocation();
+    this.curCities = this._getPage(this.curPage);
   }
 
   private _getGeolocation(): void {
@@ -66,5 +73,34 @@ export class CitiesListComponent implements OnInit {
     });
   }
 
-  addCity(): void { }
+  addCity(): void {
+    const newCity: string = this.newCityCtrl.value?.trim();
+    this.newCityCtrl.setValue('');
+
+    if (!newCity || this.storageCities.includes(newCity)) {
+      return;
+    }
+
+    this.storageCities.push(newCity);
+    this._saveCities(this.storageCities);
+    this.curPage = this.maxPage;
+    this.curCities = this._getPage(this.curPage);
+  }
+
+  private _saveCities(items: string[]) {
+    localStorage.setItem(this.lsKey, JSON.stringify(items));
+  }
+
+  private _getPage(pageNumber: number): string[] {
+    return this.storageCities.slice((pageNumber - 1) * this.pageSize, pageNumber * this.pageSize);
+  }
+
+  selectCity(event: Event): void {
+    if ((event.target as HTMLElement)?.classList?.contains('List__city')) {
+      this.selectedCity = (event.target as HTMLDivElement).innerText;
+      this._getSelectedCityWeather();
+    };
+  }
+
+  deleteCity(event: Event, city: string): void { }
 }

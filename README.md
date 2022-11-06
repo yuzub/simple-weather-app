@@ -1,3 +1,27 @@
+# Description
+
+It is necessary to develop a one-page weather application. Display data can be taken from https://fcc-weather-api.glitch.me/api/current?lat=48&lon=31 or any other open API.
+
+The application must be able to:
+Automatically request weather based on user coordinates - this is the default city/place.
+Add / remove cities (if more than 5 cities are added to the list - pagination).
+The default city is always at the top of the list and highlighted in a different color.
+Store data locally in LocalStorage/IndexedDB.
+Responsive & user-friendly interface.
+
+# Requirements
+
+Angular 14.2
+Angular Material 14.2
+
+# Installation
+
+git clone git@github.com:yuzub/simple-weather-app.git
+cd simple-weather-app
+npm install
+npm start
+open http://localhost:5700/
+
 # TestWeatherApp
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.2.3.

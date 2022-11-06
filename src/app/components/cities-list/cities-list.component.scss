@@ -11,6 +11,13 @@
   z-index: 1;
   padding: 3rem;
   overflow-y: auto;
+
+  @media (max-width: 768px) {
+    position: relative;
+    width: 100%;
+    padding: 2rem 3rem;
+    flex-grow: 1;
+  }
 }
 
 .list {

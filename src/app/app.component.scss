@@ -18,6 +18,11 @@
       background: rgba(0, 0, 0, 0.3);
       z-index: 0;
     }
+
+    @media (max-width: 768px) {
+      display: flex;
+      flex-direction: column;
+    }
   }
 
   &__container {
@@ -30,6 +35,11 @@
     align-items: flex-start;
     flex-direction: column;
     padding: 2rem 3rem 4rem;
+
+    @media (max-width: 768px) {
+      position: relative;
+      padding: 2rem 3rem;
+    }
   }
 
   &__brand {

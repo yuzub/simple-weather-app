@@ -17,4 +17,8 @@ export class CityWeatherComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  iconUrl(wData: IOpenWeatherData): string {
+    return `http://openweathermap.org/img/wn/${wData?.weather?.[0]?.icon}@2x.png`;
+  }
 }

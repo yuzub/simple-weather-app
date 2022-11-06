@@ -44,6 +44,12 @@
   &__items {
     min-height: 40rem;
     margin-bottom: 2rem;
+
+    @media (max-width: 768px) {
+      display: flex;
+      flex-wrap: wrap;
+      min-height: unset;
+    }
   }
 
   &__item {
@@ -52,6 +58,11 @@
     display: flex;
     column-gap: 2rem;
     align-items: center;
+
+    @media (max-width: 768px) {
+      flex: 0 0 auto;
+      width: 50%;
+    }
 
     &_geo {
       color: var(--color-accent);

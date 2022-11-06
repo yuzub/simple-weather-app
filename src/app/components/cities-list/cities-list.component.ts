@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { filter } from 'rxjs';
 import { IOpenWeatherData } from 'src/app/models/interfaces/open-weather-data.interface';
 import { IReverseGeo } from 'src/app/models/interfaces/reverse-geo.interface';
 import { OpenweatherApiService } from 'src/app/services/openweather-api.service';
 import { OpenweatherGeoApiService } from 'src/app/services/openweather-geo-api.service';
 import { WeatherDataService } from 'src/app/services/weather-data.service';
+import { MessageModalComponent } from '../message-modal/message-modal.component';
 
 @Component({
   selector: 'app-cities-list',
@@ -31,7 +34,8 @@ export class CitiesListComponent implements OnInit {
   constructor(
     private _openweatherGeoApi: OpenweatherGeoApiService,
     private _openWeatherApi: OpenweatherApiService,
-    private _weatherDataService: WeatherDataService
+    private _weatherDataService: WeatherDataService,
+    private _dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -62,13 +66,11 @@ export class CitiesListComponent implements OnInit {
   }
 
   private _errClbk(err: GeolocationPositionError): void {
-    // TODO add logic
     console.error(err);
   }
 
   private _getSelectedCityWeather(): void {
     this._openWeatherApi.getWeatherByCity(this.selectedCity).subscribe((res: IOpenWeatherData): void => {
-      console.log(res);
       this._weatherDataService.updateData(res);
     });
   }
@@ -109,10 +111,16 @@ export class CitiesListComponent implements OnInit {
 
   deleteCity(event: Event, city: string): void {
     event.stopPropagation();
-    this.storageCities = this.storageCities.filter((item: string): boolean => item !== city);
-    this._saveCities(this.storageCities);
-    this.curPage = 1;
-    this.curCities = this._getPage(1);
+    this._dialog
+      .open(MessageModalComponent)
+      .afterClosed()
+      .pipe(filter(Boolean))
+      .subscribe((): void => {
+        this.storageCities = this.storageCities.filter((item: string): boolean => item !== city);
+        this._saveCities(this.storageCities);
+        this.curPage = 1;
+        this.curCities = this._getPage(1);
+      });
   }
 
   setCities(inc: number): void {

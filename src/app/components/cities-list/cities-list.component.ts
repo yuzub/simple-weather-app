@@ -1,8 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { IOpenWeatherData } from 'src/app/models/interfaces/open-weather-data.interface';
 import { IReverseGeo } from 'src/app/models/interfaces/reverse-geo.interface';
 import { OpenweatherApiService } from 'src/app/services/openweather-api.service';
 import { OpenweatherGeoApiService } from 'src/app/services/openweather-geo-api.service';
+import { WeatherDataService } from 'src/app/services/weather-data.service';
 
 @Component({
   selector: 'app-cities-list',
@@ -10,14 +12,21 @@ import { OpenweatherGeoApiService } from 'src/app/services/openweather-geo-api.s
   styleUrls: ['./cities-list.component.scss']
 })
 export class CitiesListComponent implements OnInit {
-  @Output() selectionChanged: EventEmitter<IOpenWeatherData> = new EventEmitter();
   lsKey: string = 'wAppCities';
   storageCities: string[] = [];
   curCities: string[] = [];
   geolocationCity: string = '';
   selectedCity: string = '';
+  newCityCtrl: FormControl = new FormControl('');
+  formGroup: FormGroup = new FormGroup({
+    newCity: this.newCityCtrl
+  });;
 
-  constructor(private _openweatherGeoApi: OpenweatherGeoApiService, private _openWeatherApi: OpenweatherApiService) { }
+  constructor(
+    private _openweatherGeoApi: OpenweatherGeoApiService,
+    private _openWeatherApi: OpenweatherApiService,
+    private _weatherDataService: WeatherDataService
+  ) { }
 
   ngOnInit(): void {
     const storageCities = localStorage.getItem(this.lsKey);
@@ -53,7 +62,9 @@ export class CitiesListComponent implements OnInit {
   private _getSelectedCityWeather(): void {
     this._openWeatherApi.getWeatherByCity(this.selectedCity).subscribe((res: IOpenWeatherData): void => {
       console.log(res);
-      this.selectionChanged.emit(res);
+      this._weatherDataService.updateData(res);
     });
   }
+
+  addCity(): void { }
 }

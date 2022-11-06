@@ -12,3 +12,19 @@
   padding: 3rem;
   overflow-y: auto;
 }
+
+.list {
+  &__header {
+    display: flex;
+    column-gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--top-row-bg);
+    padding: 0 1rem;
+    margin-bottom: 2rem;
+  }
+
+  &__field {
+    margin-top: 1.9rem;
+  }
+}

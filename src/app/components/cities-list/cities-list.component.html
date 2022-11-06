@@ -1,1 +1,11 @@
-<p>cities-list works!</p>
+<div class="list">
+  <form class="list__header" [formGroup]="formGroup" (ngSubmit)="addCity()">
+    <mat-form-field appearance="fill" [color]="'accent'" class="list__field">
+      <mat-label>Another location</mat-label>
+      <input matInput [formControl]="newCityCtrl">
+    </mat-form-field>
+    <button type="submit" mat-mini-fab color="accent" class="list__add-btn">
+      <mat-icon>add</mat-icon>
+    </button>
+  </form>
+</div>

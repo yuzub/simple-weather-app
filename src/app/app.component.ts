@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'test-weather-app';
+  bgImageUrl: string = 'url(/assets/img/day/clouds.jpg)';
 }

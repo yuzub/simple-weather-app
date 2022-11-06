@@ -96,11 +96,27 @@ export class CitiesListComponent implements OnInit {
   }
 
   selectCity(event: Event): void {
-    if ((event.target as HTMLElement)?.classList?.contains('List__city')) {
-      this.selectedCity = (event.target as HTMLDivElement).innerText;
-      this._getSelectedCityWeather();
+    if (!(event.target as HTMLElement)?.classList?.contains('List__city')) {
+      return;
     };
+
+    const newSelected: string = (event.target as HTMLDivElement).innerText;
+    if (this.selectedCity !== newSelected) {
+      this.selectedCity = newSelected;
+      this._getSelectedCityWeather();
+    }
   }
 
-  deleteCity(event: Event, city: string): void { }
+  deleteCity(event: Event, city: string): void {
+    event.stopPropagation();
+    this.storageCities = this.storageCities.filter((item: string): boolean => item !== city);
+    this._saveCities(this.storageCities);
+    this.curPage = 1;
+    this.curCities = this._getPage(1);
+  }
+
+  setCities(inc: number): void {
+    this.curPage += inc;
+    this.curCities = this._getPage(this.curPage);
+  }
 }

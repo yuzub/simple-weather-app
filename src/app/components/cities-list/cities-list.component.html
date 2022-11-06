@@ -25,4 +25,13 @@
       </button>
     </li>
   </ul>
+
+  <div class="list__footer" *ngIf="storageCities.length > 5">
+    <button mat-mini-fab color="accent" (click)="setCities(-1)" [disabled]="curPage === 1">
+      <mat-icon>navigate_before</mat-icon>
+    </button>
+    <button mat-mini-fab color="accent" (click)="setCities(+1)" [disabled]="curPage === maxPage">
+      <mat-icon>navigate_next</mat-icon>
+    </button>
+  </div>
 </div>

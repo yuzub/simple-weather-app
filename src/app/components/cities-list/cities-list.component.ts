@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { IOpenWeatherData } from 'src/app/models/interfaces/open-weather-data.interface';
 import { IReverseGeo } from 'src/app/models/interfaces/reverse-geo.interface';
+import { OpenweatherApiService } from 'src/app/services/openweather-api.service';
 import { OpenweatherGeoApiService } from 'src/app/services/openweather-geo-api.service';
 
 @Component({
@@ -8,13 +10,14 @@ import { OpenweatherGeoApiService } from 'src/app/services/openweather-geo-api.s
   styleUrls: ['./cities-list.component.scss']
 })
 export class CitiesListComponent implements OnInit {
+  @Output() selectionChanged: EventEmitter<IOpenWeatherData> = new EventEmitter();
   lsKey: string = 'wAppCities';
   storageCities: string[] = [];
   curCities: string[] = [];
   geolocationCity: string = '';
   selectedCity: string = '';
 
-  constructor(private _openweatherGeoApi: OpenweatherGeoApiService) { }
+  constructor(private _openweatherGeoApi: OpenweatherGeoApiService, private _openWeatherApi: OpenweatherApiService) { }
 
   ngOnInit(): void {
     const storageCities = localStorage.getItem(this.lsKey);
@@ -48,5 +51,9 @@ export class CitiesListComponent implements OnInit {
   }
 
   private _getSelectedCityWeather(): void {
+    this._openWeatherApi.getWeatherByCity(this.selectedCity).subscribe((res: IOpenWeatherData): void => {
+      console.log(res);
+      this.selectionChanged.emit(res);
+    });
   }
 }

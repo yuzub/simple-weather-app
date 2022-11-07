@@ -3,7 +3,7 @@ html {
   -webkit-text-size-adjust: none;
   background: var(--app-bg);
 
-  @media screen and (max-width: 800px) {
+  @media (max-width: 768px) {
     font-size: 8px;
   }
 }

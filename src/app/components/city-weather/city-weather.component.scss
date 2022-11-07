@@ -8,10 +8,15 @@
 .weather {
   &__main {
     display: flex;
+    flex-wrap: wrap;
     gap: 2rem;
     justify-content: center;
     align-items: center;
     margin-bottom: 2rem;
+
+    @media (max-width: 768px) {
+      justify-content: flex-start;
+    }
   }
 
   &__temp {
@@ -23,6 +28,12 @@
   &__name {
     margin: 0;
     font-size: 4.2rem;
+
+    @media (max-width: 768px) {
+      flex: 0 0 auto;
+      width: 100%;
+      order: 1;
+    }
   }
 
   &__icon {
